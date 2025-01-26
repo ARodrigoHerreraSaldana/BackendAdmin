@@ -2,13 +2,13 @@ import { readFileSync } from 'fs';
 import { publicEncrypt ,privateDecrypt } from "crypto";
 import {fileURLToPath} from 'url';
 import path from 'path';
-import { __dirname } from './dirname.js';
+import { __dirname } from '../dirname.js';
+// otherFile.js
+import '../config.js';
 
-const publickKeyPath = path.resolve(__dirname, '..', 'public.pem');
-console.log(publickKeyPath)
+const publicKeyBase64 = process.env.PUBLIC_KEY;
 
-
-const publicKey = readFileSync(publickKeyPath, 'utf-8');
+const publicKey = Buffer.from(publicKeyBase64, 'base64').toString('utf-8');
 
 const obj = {
     firstName: "John",
@@ -18,7 +18,9 @@ const obj = {
     email: "john.differentemail@example.com"
 };
 
-console.log(obj)
+// // console.log(obj)
+// // console.log(process.env.)
+
 
 export const encryptTheData = function(data)
 {

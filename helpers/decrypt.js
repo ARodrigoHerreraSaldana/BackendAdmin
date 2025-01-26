@@ -1,12 +1,11 @@
 import { readFileSync } from 'fs';
 import { privateDecrypt } from "crypto";
 import path from 'path';
-import { __dirname } from './dirname.js';
+import { __dirname } from '../dirname.js';
+import '../config.js';
 
-const privateKeyPath = path.resolve(__dirname, '..', 'private.pem');
-console.log(privateKeyPath)
-
-const privateKey = readFileSync(privateKeyPath, 'utf-8');
+const privateKeyBase64 = process.env.PRIVATE_KEY
+const privateKey = Buffer.from(privateKeyBase64, 'base64').toString('utf-8').replace(/\\n/g, '\n');
 
 
 export const decryptTheData = function(data)
@@ -16,4 +15,4 @@ export const decryptTheData = function(data)
     return decryptedData.toString()
 }
 
-decryptTheData('IS381bZeMUScq1Vec0VEQDm6h9NbQ/SFNzJ4MiqBGNWGF9iaJY774eBWLfBlMtU85RyC7a14cXl/IzPnvavSUqoRzL9ojdYVSXmSpbkwA8y62Wq1SmYsZmkaJIwks8tWs2FnSbfSf9Tk4HK+p/uKssZXFSmtoQsZEyiGDT3FJ17/n3RQH1iZF411VSvamIRAM6fRV3lk5gDUoAzWHrvatMxhIalRWiYzMg92cFF9rBAE1SjfTuccbo1y2mCjCYcnFg/fbIwxIAKSnG9kb4b5RnhfxyiAFQkwmRRqa4OPj18ObTPDt3E5OvZrN5uzqTE9zenyLSkr1ce9CqaMcd8Qm23Fb8jGLQztNQb6AJHdz5zwnnTv0Z/cRquKhcLBm8ncJIVeUQ9+4jNEvnXlExbwbkjfhp2ivgo/cssT/MwNoOUi7Sf24f5hrdMpTdkQ+gjZoSFzJLi7ERsCg2+o5QVSUUVKmoH0eFipP7UKs56dE3/Qktl4y/MX0zaE6XKE6RmEBobTQVWM2Ol5Prz3j4MDuF8Wl/6ysiyHIXAsS2qJDQehcXuTJQpvmYrtFsUkKsthZIiLFLY2Tz3dTC+tJs8LGnZsbowd52maoL0/dbFSSJ3JF5X0IKaSjiR/Q2twj9UOA79GAmsJOxlbgwjoJljg2ddDh6bCqaxJDtIGbCFbzbA=')
+decryptTheData('AzmtvlHt0H9kjCLrZkbRQ8der3mUr/5TyZbbHbvOGKE+MgQxb0BXNYxKW8ZL/vYCsImKrFQdTEs16FYgNICPl2kAqRZhgBSaZJ7nUO/C6KGERJ73y6GcCzGRt01r/mkWYOXUdq53qiAbxeSNgl94sjDCJgF0US3eXZ1o7j29TCuRxvMhb/34gzPz6c/3DbzRnyc1juJH20kOOSX2gpWTqIWgbWgxan9J/b95+21OY1/BOhlOpHxJpvW9FZb7ndH1I/ATRH6grKkhQCKNaY2WhCRSiasp/zBzNIEkR3Xy5fqSm0XUOncNboU1S9LFIW2Xn+MDqDz/nfTLMbzfS3O+t9AZG3zRw0HV6azyACfQ2wa581logORNQAxvdRSyOtrfH0hn1Ns9hZn8zREwuRNushfcIpG4aESeVjovSK1bWLClbnFJRSg1hTxrhomfel+zmNbCkJw42psAXM5CtqATaazo52RCKsB6xlTUWmVl8MrD9oI17H/BFI6nbgLgDT1mKIBQAQnu7g1vn0GX73UsKDShRt4TR5bSy/TW5di+MlC8QnGInoniwSFMySzEKrBrh26yDYIV0krPwK/ksN26oFEieGu44hyR/8nk+Wz3F4DJHFRwQjOaRXcUH4PyP02zqZ3QAx+edgnnneNLgxygmuAZnYmVjylHoCo2fUZkgeI=')
