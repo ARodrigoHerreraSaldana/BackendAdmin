@@ -48,10 +48,10 @@ app.post('/checkUser', async (req, res) => {
     const result = await client.query(querytest);
     client.release();
     console.log(result.rows[0])
-    res.status(200).send({ success:'valid password and email' });
+    res.status(200).send({ response:'valid password and email' });
   } catch (err) {
     console.error('Error during user registration:', err.message);
-    res.status(400).send({ error: (err.message) });
+    res.status(400).send({ response: (err.message) });
   }
   
 });
@@ -66,10 +66,10 @@ app.post('/setFalse', async (req, res) => {
     const result = await client.query(querytest);
     client.release();
     console.log(result.rows[0])
-    res.status(200).send({ success:'Their status changed to False' });
+    res.status(200).send({ response:'Their status changed to False' });
   } catch (err) {
     console.error('Error during user registration:', err.message);
-    res.status(400).send({ error: (err.message) });
+    res.status(400).send({ response: (err.message) });
   }
   
 });
@@ -84,10 +84,10 @@ app.post('/setTrue', async (req, res) => {
     const result = await client.query(querytest);
     client.release();
     console.log(result.rows[0])
-    res.status(200).send({ success:'Their status changed to True' });
+    res.status(200).send({ response:'Their status changed to True' });
   } catch (err) {
     console.error('Error during user registration:', err.message);
-    res.status(400).send({ error: (err.message) });
+    res.status(400).send({ response: (err.message) });
   }
   
 });
