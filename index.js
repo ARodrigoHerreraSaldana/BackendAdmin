@@ -1,11 +1,12 @@
 import express from 'express';
-import cool from 'cool-ascii-faces';
+
 import pkg from 'pg';
 const { Pool} = pkg
 import bodyParser from 'body-parser';
 import path from 'path';
 import { __dirname } from './dirname.js';
-import { registerUser } from './helpers/storedProcedure.js';
+import { registerUser,validateUser,setToFalse,setToTrue } from './helpers/storedProcedure.js';
+import cors from 'cors';
 
 const port = process.env.PORT || 5006;
 const app = express();
@@ -16,24 +17,94 @@ const pool = new Pool({
     rejectUnauthorized: false,
   },
 });
-
+app.use(cors())
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.post('/newUser', async (req, res) => {
-  let querytest=registerUser(req.body.text)
-  console.log(req.body)
+  console.log('req.body', req.body)
+  let querytest=registerUser(req.body)
   console.log('querytest', querytest)
   try {
     const client = await pool.connect();
     const result = await client.query(querytest);
     client.release();
-    res.send('User registered successfully');
+    res.status(200).send({ success: 'User Added to the database' });
   } catch (err) {
     console.error('Error during user registration:', err.message);
-    res.send(err.message);
+    res.status(400).send({ error: (err.message) });
+  }
+});
+
+
+app.post('/checkUser', async (req, res) => {
+  console.log('req.body', req.body)
+  let querytest=validateUser(req.body)
+  console.log('querytest', querytest)
+  try {
+    const client = await pool.connect();
+    const result = await client.query(querytest);
+    client.release();
+    console.log(result.rows[0])
+    res.status(200).send({ success:'valid password and email' });
+  } catch (err) {
+    console.error('Error during user registration:', err.message);
+    res.status(400).send({ error: (err.message) });
+  }
+  
+});
+
+
+app.post('/setFalse', async (req, res) => {
+  console.log('req.body', req.body)
+  let querytest=setToFalse(req.body)
+  console.log('querytest', querytest)
+  try {
+    const client = await pool.connect();
+    const result = await client.query(querytest);
+    client.release();
+    console.log(result.rows[0])
+    res.status(200).send({ success:'Their status changed to False' });
+  } catch (err) {
+    console.error('Error during user registration:', err.message);
+    res.status(400).send({ error: (err.message) });
+  }
+  
+});
+
+
+app.post('/setTrue', async (req, res) => {
+  console.log('req.body', req.body)
+  let querytest=setToTrue(req.body)
+  console.log('querytest', querytest)
+  try {
+    const client = await pool.connect();
+    const result = await client.query(querytest);
+    client.release();
+    console.log(result.rows[0])
+    res.status(200).send({ success:'Their status changed to True' });
+  } catch (err) {
+    console.error('Error during user registration:', err.message);
+    res.status(400).send({ error: (err.message) });
+  }
+  
+});
+
+app.get('/lastLogin', async (req, res) => {
+  console.log('req.body', req.body)
+  let querytest=`SELECT CONCAT(first_name, ' ', last_name) AS full_name , occupation, email, created_at, status 
+  FROM users;`
+  console.log('querytest', querytest)
+  try {
+    const client = await pool.connect();
+    const result = await client.query(querytest);
+    client.release();
+    res.status(200).send(result.rows);
+  } catch (err) {
+    console.error('Error during user registration:', err.message);
+    res.status(400).send();
   }
   
 });
