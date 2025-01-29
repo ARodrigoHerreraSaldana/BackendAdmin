@@ -48,7 +48,13 @@ app.post('/checkUser', async (req, res) => {
     const result = await client.query(querytest);
     client.release();
     console.log(result.rows[0])
+    if(result.rows[0]==true)
+    {
     res.status(200).send({ response:'valid password and email' });
+    }
+    else if(result.rows[0]==false){
+      res.status(400).send({ response:'Invalid password and email' }); 
+    }
   } catch (err) {
     console.error('Error during user registration:', err.message);
     res.status(400).send({ response: (err.message) });
