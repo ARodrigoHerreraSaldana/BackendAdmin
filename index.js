@@ -44,6 +44,7 @@ app.post('/checkUser', async (req, res) => {
   let querytest=validateUser(req.body)
   console.log('querytest', querytest)
   try {
+    console.log('sadasvd')
     const client = await pool.connect();
     const result = await client.query(querytest);
     client.release();
